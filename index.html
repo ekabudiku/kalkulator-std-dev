@@ -4,200 +4,329 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kalkulator Standar Deviasi</title>
-  <link rel="icon" type="image/png" href="favicon.png">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      line-height: 1.6;
-      background-color: #f9f9f9;
-      color: #333;
-      transition: background-color 0.3s, color 0.3s;
+    /* 1. Pengaturan Dasar & Variabel Warna */
+    :root {
+      --bg: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-color: #212529;
+      --border-color: #dee2e6;
+      --accent-color: #007bff;
+      --accent-hover: #0056b3;
+      --result-bg: #e9ecef;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --success-bg: #d1e7dd;
+      --success-text: #0a3622;
+      --danger-bg: #f8d7da;
+      --danger-text: #721c24;
     }
-    h2 {
-      text-align: center;
+
+    body.dark {
+      --bg: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #e9ecef;
+      --border-color: #495057;
+      --accent-color: #4dabf7;
+      --accent-hover: #1c7ed6;
+      --result-bg: #343a40;
+      --success-bg: #143e3d;
+      --success-text: #a6d9b8;
+      --danger-bg: #5c2122;
+      --danger-text: #f5c2c7;
     }
-    .container {
-      max-width: 600px;
-      margin: auto;
-      padding: 15px;
-    }
-    .inputs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-    }
-    input {
-      flex: 1 1 100px;
-      min-width: 80px;
-      padding: 8px;
-      font-size: 16px;
+    
+    *, *::before, *::after {
       box-sizing: border-box;
     }
-    button {
-      margin: 15px auto;
-      padding: 10px 20px;
-      font-size: 16px;
-      display: block;
-      cursor: pointer;
-      border: none;
-      border-radius: 6px;
-      background-color: #007BFF;
-      color: white;
-      transition: background-color 0.3s;
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      background-color: var(--bg);
+      color: var(--text-color);
+      line-height: 1.6;
+      transition: background-color 0.3s, color 0.3s;
     }
-    button:hover {
-      background-color: #0056b3;
+
+    /* 2. Layout Kontainer Utama */
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
     }
-    #hasil {
-      margin-top: 20px;
-      font-weight: bold;
-      font-size: 18px;
-      padding: 12px;
+    
+    .topbar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1rem;
+    }
+    
+    .topbar button {
+        background-color: transparent;
+        color: var(--accent-color);
+        border: 1px solid var(--border-color);
+        padding: 0.5rem 0.8rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .topbar button:hover {
+        background-color: var(--accent-color);
+        color: white;
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--accent-color);
+      margin-top: 0;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1rem;
+    }
+
+    p {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        color: var(--text-color);
+        opacity: 0.8;
+    }
+
+    /* 3. Grid untuk Input Sampel yang Adaptif */
+    .inputs {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+
+    /* 4. Styling Elemen Form */
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
       border-radius: 8px;
+      background-color: var(--bg);
+      color: var(--text-color);
+      font-size: 1rem;
       text-align: center;
-      word-wrap: break-word;
-    }
-    .hijau {
-      background-color: #d4edda;
-      color: #155724;
-    }
-    .merah {
-      background-color: #f8d7da;
-      color: #721c24;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
-    /* Tombol dark mode */
-    #themeToggle {
-      background-color: #444;
-      margin-bottom: 15px;
+    input:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    }
+    
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
 
-    /* Dark mode */
-    body.dark {
-      background-color: #121212;
-      color: #f1f1f1;
-    }
-    body.dark input {
-      background-color: #222;
-      color: #fff;
-      border: 1px solid #555;
-    }
-    body.dark button {
-      background-color: #28a745;
-    }
-    body.dark button:hover {
-      background-color: #1e7e34;
-    }
-    body.dark .hijau {
-      background-color: #155724;
-      color: #d4edda;
-    }
-    body.dark .merah {
-      background-color: #721c24;
-      color: #f8d7da;
+    /* Firefox */
+    input[type=number] {
+      -moz-appearance: textfield;
     }
 
-    /* Instagram icon */
-    .social {
-      margin-top: 25px;
-      text-align: center;
+
+    /* 5. Tombol Aksi yang Terpusat */
+    .button-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 2.5rem;
     }
-    .social a {
-      text-decoration: none;
-      color: inherit;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+
+    .action-button {
+      padding: 0.8rem 1.5rem;
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1rem;
       font-weight: bold;
-      font-size: 16px;
-    }
-    .social img {
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      transition: transform 0.3s;
-    }
-    .social a:hover img {
-      transform: scale(1.2);
+      transition: background-color 0.3s, transform 0.2s;
+      width: 100%;
+      max-width: 300px;
     }
 
-    /* Responsif */
-    @media (max-width: 480px) {
-      input {
-        flex: 1 1 100%;
-      }
-      button {
-        width: 100%;
-      }
+    .action-button:hover {
+      background-color: var(--accent-hover);
+      transform: translateY(-2px);
+    }
+    
+    /* 6. Area Hasil yang Lebih Terstruktur */
+    #hasil {
+      margin-top: 2.5rem;
+      padding: 1rem;
+      background-color: var(--result-bg);
+      border-radius: 8px;
+      word-wrap: break-word;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+    }
+    
+    #hasil.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .result-line {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.8rem;
+        border-radius: 6px;
+        margin-top: 0.5rem;
+    }
+    
+    .result-line:first-child {
+        margin-top: 0;
+    }
+    
+    .result-line span {
+        opacity: 0.9;
+        font-weight: 500;
+    }
+    
+    .result-line strong {
+        font-size: 1.25rem;
+    }
+    
+    /* Kelas status untuk hasil RSD */
+    .status-ok {
+        background-color: var(--success-bg);
+        color: var(--success-text);
+    }
+    .status-bad {
+        background-color: var(--danger-bg);
+        color: var(--danger-text);
+    }
+
+    /* 7. Footer & Social Link */
+    .footer {
+        margin-top: 2.5rem;
+        text-align: center;
+        border-top: 1px solid var(--border-color);
+        padding-top: 1.5rem;
+    }
+
+    .footer a {
+        text-decoration: none;
+        color: var(--text-color);
+        opacity: 0.7;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+        transition: opacity 0.3s;
+    }
+    
+    .footer a:hover {
+        opacity: 1;
+    }
+
+    .footer img {
+        width: 24px;
+        height: 24px;
+        transition: transform 0.3s;
+    }
+
+    .footer a:hover img {
+        transform: scale(1.15);
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <div class="topbar">
+      <button onclick="toggleTheme()" id="themeToggle">🌙/☀️</button>
+    </div>
     <h2>Kalkulator Standar Deviasi & Relatif</h2>
 
-    <button id="themeToggle" onclick="toggleTheme()">🌙 Ganti Tema</button>
-
-    <p>Masukkan 3–7 titik sampel:</p>
+    <p>Masukkan 3 hingga 7 nilai sampel data Anda.</p>
     <div class="inputs">
       <input type="number" id="s1" placeholder="Sampel 1">
       <input type="number" id="s2" placeholder="Sampel 2">
       <input type="number" id="s3" placeholder="Sampel 3">
-      <input type="number" id="s4" placeholder="Sampel 4 (opsional)">
-      <input type="number" id="s5" placeholder="Sampel 5 (opsional)">
-      <input type="number" id="s6" placeholder="Sampel 6 (opsional)">
-      <input type="number" id="s7" placeholder="Sampel 7 (opsional)">
+      <input type="number" id="s4" placeholder="Sampel 4">
+      <input type="number" id="s5" placeholder="Sampel 5">
+      <input type="number" id="s6" placeholder="Sampel 6">
+      <input type="number" id="s7" placeholder="Sampel 7">
     </div>
 
-    <button onclick="hitung()">Hitung</button>
+    <div class="button-container">
+      <button class="action-button" onclick="hitung()">Hitung</button>
+    </div>
+    
     <div id="hasil"></div>
 
-    <!-- Instagram Icon -->
-    <div class="social">
-      <a href="https://instagram.com/ekabudiku" target="_blank">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuH7c5cLpGehi0b4iQk90fXUzC9p7Ebla13w&s" alt="Instagram">
+    <div class="footer">
+      <a href="https://instagram.com/ekabudiku" target="_blank" rel="noopener noreferrer">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
+        <span></span>
       </a>
     </div>
   </div>
 
   <script>
     function hitung() {
-      let values = [];
+      const values = [];
       for (let i = 1; i <= 7; i++) {
-        let v = document.getElementById("s" + i).value;
-        if (v !== "") values.push(parseFloat(v));
+        const value = document.getElementById("s" + i).value;
+        if (value !== "") {
+            values.push(parseFloat(value));
+        }
       }
 
+      const hasilDiv = document.getElementById("hasil");
+
       if (values.length < 3) {
-        alert("Minimal 3 sampel harus diisi Broo!");
+        hasilDiv.innerHTML = `<div class="result-line status-bad"><span>Error</span><strong>Minimal 3 sampel harus diisi!</strong></div>`;
+        hasilDiv.classList.add("visible");
         return;
       }
 
-      let mean = values.reduce((a, b) => a + b, 0) / values.length;
-      let variance = values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / (values.length - 1);
-      let sd = Math.sqrt(variance);
-      let rsd = (sd / mean) * 100;
+      const mean = values.reduce((a, b) => a + b, 0) / values.length;
+      // Gunakan varians sampel (n-1)
+      const variance = values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / (values.length - 1);
+      const sd = Math.sqrt(variance);
+      const rsd = mean !== 0 ? (sd / mean) * 100 : 0;
 
-      let hasilDiv = document.getElementById("hasil");
-      hasilDiv.innerHTML = `SD = ${sd.toFixed(4)} <br> RSD = ${rsd.toFixed(2)}%`;
+      // Tentukan kelas status berdasarkan nilai RSD
+      const rsdStatusClass = rsd <= 25 ? 'status-ok' : 'status-bad';
+      const rsdStatusText = rsd <= 25 ? 'Baik' : 'Kurang Baik';
 
-      if (rsd <= 25) {
-        hasilDiv.className = "hijau";
-      } else {
-        hasilDiv.className = "merah";
-      }
+      // Buat struktur hasil yang baru
+      hasilDiv.innerHTML = `
+        <div class="result-line">
+            <span>Rata-rata (Mean)</span>
+            <strong>${mean.toFixed(4)}</strong>
+        </div>
+        <div class="result-line">
+            <span>Standar Deviasi (SD)</span>
+            <strong>${sd.toFixed(4)}</strong>
+        </div>
+        <div class="result-line ${rsdStatusClass}">
+            <span>Relatif Standar Deviasi (RSD)</span>
+            <strong>${rsd.toFixed(2)}% (${rsdStatusText})</strong>
+        </div>
+      `;
+      
+      // Tambahkan kelas untuk memicu animasi fade-in
+      hasilDiv.classList.add("visible");
     }
 
     function toggleTheme() {
       document.body.classList.toggle("dark");
-      let btn = document.getElementById("themeToggle");
-      if (document.body.classList.contains("dark")) {
-        btn.textContent = "☀️ Ganti ke Light Mode";
-      } else {
-        btn.textContent = "🌙 Ganti ke Dark Mode";
-      }
     }
   </script>
 </body>
