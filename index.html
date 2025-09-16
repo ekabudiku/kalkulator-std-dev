@@ -9,6 +9,9 @@
       font-family: Arial, sans-serif;
       margin: 20px;
       line-height: 1.6;
+      background-color: #f9f9f9;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
     }
     h2 {
       text-align: center;
@@ -41,6 +44,7 @@
       border-radius: 6px;
       background-color: #007BFF;
       color: white;
+      transition: background-color 0.3s;
     }
     button:hover {
       background-color: #0056b3;
@@ -63,7 +67,38 @@
       color: #721c24;
     }
 
-    /* Responsif untuk layar kecil */
+    /* Tombol dark mode */
+    #themeToggle {
+      background-color: #444;
+      margin-bottom: 15px;
+    }
+
+    /* Dark mode */
+    body.dark {
+      background-color: #121212;
+      color: #f1f1f1;
+    }
+    body.dark input {
+      background-color: #222;
+      color: #fff;
+      border: 1px solid #555;
+    }
+    body.dark button {
+      background-color: #28a745;
+    }
+    body.dark button:hover {
+      background-color: #1e7e34;
+    }
+    body.dark .hijau {
+      background-color: #155724;
+      color: #d4edda;
+    }
+    body.dark .merah {
+      background-color: #721c24;
+      color: #f8d7da;
+    }
+
+    /* Responsif */
     @media (max-width: 480px) {
       input {
         flex: 1 1 100%;
@@ -77,8 +112,10 @@
 <body>
   <div class="container">
     <h2>Kalkulator Standar Deviasi & Relatif</h2>
-    <p>Masukkan 3–5 titik sampel:</p>
 
+    <button id="themeToggle" onclick="toggleTheme()">🌙 Ganti Tema</button>
+
+    <p>Masukkan 3–5 titik sampel:</p>
     <div class="inputs">
       <input type="number" id="s1" placeholder="Sampel 1">
       <input type="number" id="s2" placeholder="Sampel 2">
@@ -116,6 +153,16 @@
         hasilDiv.className = "hijau";
       } else {
         hasilDiv.className = "merah";
+      }
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+      let btn = document.getElementById("themeToggle");
+      if (document.body.classList.contains("dark")) {
+        btn.textContent = "☀️ Ganti ke Light Mode";
+      } else {
+        btn.textContent = "🌙 Ganti ke Dark Mode";
       }
     }
   </script>
