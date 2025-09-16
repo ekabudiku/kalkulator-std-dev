@@ -99,6 +99,30 @@
       color: #f8d7da;
     }
 
+    /* Instagram icon */
+    .social {
+      margin-top: 25px;
+      text-align: center;
+    }
+    .social a {
+      text-decoration: none;
+      color: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .social img {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      transition: transform 0.3s;
+    }
+    .social a:hover img {
+      transform: scale(1.2);
+    }
+
     /* Responsif */
     @media (max-width: 480px) {
       input {
@@ -116,7 +140,7 @@
 
     <button id="themeToggle" onclick="toggleTheme()">🌙 Ganti Tema</button>
 
-    <p>Masukkan 3–5 titik sampel:</p>
+    <p>Masukkan 3–7 titik sampel:</p>
     <div class="inputs">
       <input type="number" id="s1" placeholder="Sampel 1">
       <input type="number" id="s2" placeholder="Sampel 2">
@@ -129,6 +153,13 @@
 
     <button onclick="hitung()">Hitung</button>
     <div id="hasil"></div>
+
+    <!-- Instagram Icon -->
+    <div class="social">
+      <a href="https://instagram.com/ekabudiku" target="_blank">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuH7c5cLpGehi0b4iQk90fXUzC9p7Ebla13w&s" alt="Instagram">
+      </a>
+    </div>
   </div>
 
   <script>
@@ -171,7 +202,3 @@
   </script>
 </body>
 </html>
-
-
-
-
