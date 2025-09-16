@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Standar Deviasi</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    h2 {
+      text-align: center;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 15px;
+    }
+    .inputs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    input {
+      flex: 1 1 100px;
+      min-width: 80px;
+      padding: 8px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    button {
+      margin: 15px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      display: block;
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      background-color: #007BFF;
+      color: white;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #hasil {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+      word-wrap: break-word;
+    }
+    .hijau {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .merah {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    /* Responsif untuk layar kecil */
+    @media (max-width: 480px) {
+      input {
+        flex: 1 1 100%;
+      }
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Kalkulator Standar Deviasi & Relatif</h2>
+    <p>Masukkan 3–5 titik sampel:</p>
+
+    <div class="inputs">
+      <input type="number" id="s1" placeholder="Sampel 1">
+      <input type="number" id="s2" placeholder="Sampel 2">
+      <input type="number" id="s3" placeholder="Sampel 3">
+      <input type="number" id="s4" placeholder="Sampel 4 (opsional)">
+      <input type="number" id="s5" placeholder="Sampel 5 (opsional)">
+    </div>
+
+    <button onclick="hitung()">Hitung</button>
+    <div id="hasil"></div>
+  </div>
+
+  <script>
+    function hitung() {
+      let values = [];
+      for (let i = 1; i <= 5; i++) {
+        let v = document.getElementById("s" + i).value;
+        if (v !== "") values.push(parseFloat(v));
+      }
+
+      if (values.length < 3) {
+        alert("Minimal 3 sampel harus diisi!");
+        return;
+      }
+
+      let mean = values.reduce((a, b) => a + b, 0) / values.length;
+      let variance = values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / (values.length - 1);
+      let sd = Math.sqrt(variance);
+      let rsd = (sd / mean) * 100;
+
+      let hasilDiv = document.getElementById("hasil");
+      hasilDiv.innerHTML = `SD = ${sd.toFixed(4)} <br> RSD = ${rsd.toFixed(2)}%`;
+
+      if (rsd <= 25) {
+        hasilDiv.className = "hijau";
+      } else {
+        hasilDiv.className = "merah";
+      }
+    }
+  </script>
+</body>
+</html>
