@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kalkulator Standar Deviasi</title>
-   <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="icon" type="image/png" href="favicon.png">
   <style>
     /* 1. Pengaturan Dasar & Variabel Warna */
     :root {
@@ -123,19 +123,6 @@
       border-color: var(--accent-color);
       box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
     }
-    
-    /* Chrome, Safari, Edge, Opera */
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
-    /* Firefox */
-    input[type=number] {
-      -moz-appearance: textfield;
-    }
-
 
     /* 5. Tombol Aksi yang Terpusat */
     .button-container {
@@ -235,13 +222,13 @@
         opacity: 1;
     }
 
-    .footer img {
+    .footer svg { /* Diubah dari img ke svg */
         width: 24px;
         height: 24px;
         transition: transform 0.3s;
     }
 
-    .footer a:hover img {
+    .footer a:hover svg { /* Diubah dari img ke svg */
         transform: scale(1.15);
     }
   </style>
@@ -255,13 +242,13 @@
 
     <p>Masukkan 3 hingga 7 nilai sampel data Anda.</p>
     <div class="inputs">
-      <input type="number" id="s1" placeholder="Sampel 1">
-      <input type="number" id="s2" placeholder="Sampel 2">
-      <input type="number" id="s3" placeholder="Sampel 3">
-      <input type="number" id="s4" placeholder="Sampel 4">
-      <input type="number" id="s5" placeholder="Sampel 5">
-      <input type="number" id="s6" placeholder="Sampel 6">
-      <input type="number" id="s7" placeholder="Sampel 7">
+      <input type="text" id="s1" placeholder="Sampel 1" oninput="formatRupiah(this)">
+      <input type="text" id="s2" placeholder="Sampel 2" oninput="formatRupiah(this)">
+      <input type="text" id="s3" placeholder="Sampel 3" oninput="formatRupiah(this)">
+      <input type="text" id="s4" placeholder="Sampel 4" oninput="formatRupiah(this)">
+      <input type="text" id="s5" placeholder="Sampel 5" oninput="formatRupiah(this)">
+      <input type="text" id="s6" placeholder="Sampel 6" oninput="formatRupiah(this)">
+      <input type="text" id="s7" placeholder="Sampel 7" oninput="formatRupiah(this)">
     </div>
 
     <div class="button-container">
@@ -272,19 +259,36 @@
 
     <div class="footer">
       <a href="https://instagram.com/ekabudiku" target="_blank" rel="noopener noreferrer">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+        </svg>
         <span></span>
       </a>
     </div>
   </div>
 
   <script>
+    // Ditambahkan: Fungsi untuk memformat input angka
+    function formatRupiah(inputElement) {
+        let value = inputElement.value.replace(/\D/g, '');
+        if (value) {
+            inputElement.value = new Intl.NumberFormat('id-ID').format(value);
+        } else {
+            inputElement.value = '';
+        }
+    }
+
     function hitung() {
       const values = [];
       for (let i = 1; i <= 7; i++) {
-        const value = document.getElementById("s" + i).value;
+        const inputElement = document.getElementById("s" + i);
+        const value = inputElement.value;
         if (value !== "") {
-            values.push(parseFloat(value));
+          // Diubah: Hapus titik sebelum mengubah ke angka
+          const unformattedValue = value.replace(/\./g, '');
+          values.push(parseFloat(unformattedValue));
         }
       }
 
@@ -302,27 +306,29 @@
       const sd = Math.sqrt(variance);
       const rsd = mean !== 0 ? (sd / mean) * 100 : 0;
 
-      // Tentukan kelas status berdasarkan nilai RSD
       const rsdStatusClass = rsd <= 25 ? 'status-ok' : 'status-bad';
-      const rsdStatusText = rsd <= 25 ? 'Baik' : 'Kurang Baik';
+      const rsdStatusText = rsd <= 25 ? 'Mantab' : 'Ditolak dulu ya';
 
-      // Buat struktur hasil yang baru
+      // Format angka hasil dengan pemisah ribuan
+      const formattedMean = new Intl.NumberFormat('id-ID', { maximumFractionDigits: 4 }).format(mean);
+      const formattedSd = new Intl.NumberFormat('id-ID', { maximumFractionDigits: 4 }).format(sd);
+      const formattedRsd = new Intl.NumberFormat('id-ID', { maximumFractionDigits: 2 }).format(rsd);
+
       hasilDiv.innerHTML = `
         <div class="result-line">
             <span>Rata-rata (Mean)</span>
-            <strong>${mean.toFixed(4)}</strong>
+            <strong>${formattedMean}</strong>
         </div>
         <div class="result-line">
             <span>Standar Deviasi (SD)</span>
-            <strong>${sd.toFixed(4)}</strong>
+            <strong>${formattedSd}</strong>
         </div>
         <div class="result-line ${rsdStatusClass}">
             <span>Relatif Standar Deviasi (RSD)</span>
-            <strong>${rsd.toFixed(2)}% (${rsdStatusText})</strong>
+            <strong>${formattedRsd}% (${rsdStatusText})</strong>
         </div>
       `;
       
-      // Tambahkan kelas untuk memicu animasi fade-in
       hasilDiv.classList.add("visible");
     }
 
@@ -332,4 +338,3 @@
   </script>
 </body>
 </html>
-
