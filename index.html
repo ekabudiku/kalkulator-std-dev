@@ -18,9 +18,7 @@
       align-items: center;
       background-color: #0f172a;
       padding: 16px;
-      position: relative;
-      cursor: pointer;
-      user-select: none;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
     .container {
@@ -29,7 +27,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 16px;
+      gap: 20px;
     }
 
     .container img {
@@ -40,29 +38,35 @@
       display: block;
     }
 
-    .tap-hint {
-      color: #94a3b8;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      font-size: 14px;
-      text-align: center;
-      padding: 8px 16px;
-      background: rgba(30, 41, 59, 0.7);
+    .play-button {
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+      color: #ffffff;
+      border: none;
+      padding: 14px 32px;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 1px;
       border-radius: 9999px;
-      backdrop-filter: blur(4px);
-      transition: opacity 0.3s ease;
+      cursor: pointer;
+      box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.39);
+      transition: all 0.2s ease-in-out;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .hidden {
-      opacity: 0;
-      pointer-events: none;
+    .play-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
     }
 
-    #sc-player {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      opacity: 0;
-      pointer-events: none;
+    .play-button:active {
+      transform: scale(0.95);
+    }
+
+    .play-button.playing {
+      background: #10b981;
+      box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39);
     }
   </style>
 </head>
@@ -70,35 +74,34 @@
 
   <main class="container">
     <img 
-      src="ttps://github.com/ekabudiku/kalkulator-std-dev/blob/main/kicau-mania.gif" 
-      alt="Kicau Mania Scuba Kicau"
+      src="trio.gif" 
+      alt="Happy Cat"
     >
-    <div id="hint" class="tap-hint">MUSIKKKKKK🎵</div>
+    <button id="btn-play" class="play-button">
+      ▶ MUSIKKKK
+    </button>
   </main>
 
-  <iframe 
-    id="sc-player" 
-    src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/stevechris/kicau-mania-steve-chris-edit&auto_play=false" 
-    allow="autoplay">
-  </iframe>
+  <audio id="my-audio" src="tante.mp3" loop preload="auto"></audio>
 
-  <script src="https://w.soundcloud.com/player/api.js"></script>
   <script>
-    const iframe = document.getElementById('sc-player');
-    const hint = document.getElementById('hint');
-    const widget = SC.Widget(iframe);
-    let isPlayed = false;
+    const audio = document.getElementById('my-audio');
+    const btnPlay = document.getElementById('btn-play');
 
-    function startAudio() {
-      if (!isPlayed) {
-        widget.play();
-        isPlayed = true;
-        hint.classList.add('hidden');
+    btnPlay.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play().then(() => {
+          btnPlay.textContent = '⏸ PAUSE';
+          btnPlay.classList.add('playing');
+        }).catch(err => {
+          console.log("Audio playback error:", err);
+        });
+      } else {
+        audio.pause();
+        btnPlay.textContent = '▶ MUSIKKKK';
+        btnPlay.classList.remove('playing');
       }
-    }
-
-    document.body.addEventListener('click', startAudio, { once: true });
-    document.body.addEventListener('touchstart', startAudio, { once: true });
+    });
   </script>
 </body>
 </html>
