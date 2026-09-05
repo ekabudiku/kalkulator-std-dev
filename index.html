@@ -20,27 +20,29 @@
       padding: 16px;
     }
 
-    .embed-container {
+    .gif-container {
       width: 100%;
-      max-width: 480px; /* Batas maksimal lebar agar tidak terlalu besar di monitor desktop */
+      max-width: 480px;
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
-    .embed-container .tenor-gif-embed {
-      width: 100% !important;
+    .gif-container img {
+      width: 100%;
+      height: auto;
       border-radius: 12px;
-      overflow: hidden;
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+      display: block;
     }
   </style>
 </head>
 <body>
-  <main class="embed-container">
-    <div class="tenor-gif-embed" data-postid="5929869758222543133" data-share-method="host" data-aspect-ratio="1" data-width="100%"><a href="https://tenor.com/view/kicau-mania-scuba-kicau-scuba-kicau-mania-kucing-kucing-gif-5929869758222543133">Kicau Mania Scuba Kicau Sticker</a>from <a href="https://tenor.com/search/kicau+mania-stickers">Kicau Mania Stickers</a></div>
+  <main class="gif-container">
+    <img 
+      src="https://media.tenor.com/C7YIu67b1t0AAAAC/kicau-mania-scuba-kicau.gif" 
+      alt="Kicau Mania Scuba Kicau"
+    >
   </main>
-
-  <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
 </body>
 </html>
