@@ -40,7 +40,6 @@
       display: block;
     }
 
-    /* Overlay panduan interaksi awal */
     .tap-hint {
       color: #94a3b8;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -58,7 +57,6 @@
       pointer-events: none;
     }
 
-    /* Iframe disembunyikan secara visual tanpa mematikan eksekusi audio */
     #sc-player {
       position: absolute;
       width: 1px;
@@ -72,20 +70,18 @@
 
   <main class="container">
     <img 
-      src="https://media.tenor.com/C7YIu67b1t0AAAAC/kicau-mania-scuba-kicau.gif" 
+      src="kicau.gif" 
       alt="Kicau Mania Scuba Kicau"
     >
-    <div id="hint" class="tap-hint">Klik di mana saja untuk putar lagu 🎵</div>
+    <div id="hint" class="tap-hint">MUSIKKKKKK🎵</div>
   </main>
 
-  <!-- Player SoundCloud via Widget API -->
   <iframe 
     id="sc-player" 
     src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/stevechris/kicau-mania-steve-chris-edit&auto_play=false" 
     allow="autoplay">
   </iframe>
 
-  <!-- SDK SoundCloud Widget -->
   <script src="https://w.soundcloud.com/player/api.js"></script>
   <script>
     const iframe = document.getElementById('sc-player');
@@ -93,7 +89,6 @@
     const widget = SC.Widget(iframe);
     let isPlayed = false;
 
-    // Memutar otomatis saat pengguna menyentuh layar atau mengklik pertama kali
     function startAudio() {
       if (!isPlayed) {
         widget.play();
