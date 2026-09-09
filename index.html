@@ -1,107 +1,366 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kalkulator Penyusutan</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #0f172a;
-      padding: 16px;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
+<title>Kalkulator Standar Deviasi Relatif | Zona Nilai Tanah</title>
 
-    .container {
-      width: 100%;
-      max-width: 480px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-    }
+<meta name="description" content="Kalkulator Standar Deviasi Relatif (RSD) untuk analisis Zona Nilai Tanah (ZNT). Hitung mean, standar deviasi, dan RSD secara otomatis.">
 
-    .container img {
-      width: 100%;
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
-      display: block;
-    }
+<!-- ================= OPEN GRAPH (WA / FB / LINKEDIN) ================= -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ekabudiku.github.io/kalkulator-std-dev/">
+<meta property="og:title" content="Kalkulator Standar Deviasi Relatif | ZNT">
+<meta property="og:description" content="Tools analisis Standar Deviasi Relatif (RSD) untuk proyek Zona Nilai Tanah (ZNT).">
+<meta property="og:image" content="https://ekabudiku.github.io/kalkulator-std-dev/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 
-    .play-button {
-      background: linear-gradient(135deg, #f59e0b, #ef4444);
-      color: #ffffff;
-      border: none;
-      padding: 14px 32px;
-      font-size: 18px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      border-radius: 9999px;
-      cursor: pointer;
-      box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.39);
-      transition: all 0.2s ease-in-out;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+<!-- ================= TWITTER CARD ================= -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kalkulator Standar Deviasi Relatif | ZNT">
+<meta name="twitter:description" content="Hitung RSD untuk analisis Zona Nilai Tanah secara cepat dan akurat.">
+<meta name="twitter:image" content="https://ekabudiku.github.io/kalkulator-std-dev/og-image.png">
 
-    .play-button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
-    }
+<style>
+/* ================= NEUMORPH VARIABLES ================= */
+:root{
+  --bg:#e0e5ec;
+  --card-bg:#e0e5ec;
+  --text:#333;
 
-    .play-button:active {
-      transform: scale(0.95);
-    }
+  --accent:#4c6ef5;
+  --accent-hover:#364fc7;
 
-    .play-button.playing {
-      background: #10b981;
-      box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39);
-    }
-  </style>
+  --soft-shadow:
+    8px 8px 16px #b8bcc2,
+   -8px -8px 16px #ffffff;
+
+  --inset-shadow:
+    inset 6px 6px 12px #b8bcc2,
+    inset -6px -6px 12px #ffffff;
+
+  --success-bg:#d3f9d8;
+  --success-text:#2b8a3e;
+
+  --danger-bg:#ffe3e3;
+  --danger-text:#c92a2a;
+}
+
+/* ================= DARK MODE ================= */
+body.dark{
+  --bg:#1e1e1e;
+  --card-bg:#1e1e1e;
+  --text:#e5e5e5;
+
+  --accent:#74c0fc;
+  --accent-hover:#4dabf7;
+
+  --soft-shadow:
+    8px 8px 16px #141414,
+   -8px -8px 16px #2a2a2a;
+
+  --inset-shadow:
+    inset 6px 6px 12px #141414,
+    inset -6px -6px 12px #2a2a2a;
+
+  --success-bg:#2b8a3e;
+  --success-text:#d3f9d8;
+
+  --danger-bg:#5c2122;
+  --danger-text:#ffc9c9;
+}
+
+/* ================= BASE ================= */
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Segoe UI,Tahoma,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* ================= CONTAINER ================= */
+.container{
+  max-width:850px;
+  margin:2rem auto;
+  padding:2rem;
+  border-radius:28px;
+  background:var(--card-bg);
+  box-shadow:var(--soft-shadow);
+}
+
+/* ================= TOPBAR ================= */
+.topbar{
+  display:flex;
+  justify-content:flex-end;
+}
+
+.topbar button{
+  width:42px;
+  height:42px;
+  border:none;
+  border-radius:50%;
+  background:var(--card-bg);
+  box-shadow:var(--soft-shadow);
+  cursor:pointer;
+}
+
+.topbar button:hover{box-shadow:var(--inset-shadow)}
+
+/* ================= TITLE ================= */
+h2{
+  text-align:center;
+  margin-top:0;
+  color:var(--accent);
+}
+
+/* ================= INPUT GRID ================= */
+.inputs{
+  margin-top:2rem;
+  display:grid;
+  gap:1rem;
+
+  /* KUNCI PENYAMAAN UKURAN */
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  align-items:stretch;
+}
+
+/* ================= INPUT ================= */
+input{
+  height:48px;
+  border:none;
+  border-radius:14px;
+  padding:0 1rem;
+  text-align:center;
+  font-size:1rem;
+  background:var(--card-bg);
+  box-shadow:var(--inset-shadow);
+  color:var(--text);
+}
+
+input:focus{outline:none}
+
+/* ================= BUTTONS (VERTICAL) ================= */
+.button-container{
+  margin-top:2rem;
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+  align-items:center;
+}
+
+.action-button{
+  width:100%;
+  max-width:260px;
+  height:48px;
+  border:none;
+  border-radius:18px;
+  font-weight:bold;
+  background:var(--card-bg);
+  color:var(--accent);
+  box-shadow:var(--soft-shadow);
+  cursor:pointer;
+}
+
+.action-button:hover{box-shadow:var(--inset-shadow)}
+
+/* ================= RESULT ================= */
+#hasil{
+  margin-top:2.5rem;
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+}
+
+.result-line{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:1rem;
+  border-radius:18px;
+  background:var(--card-bg);
+  box-shadow:var(--soft-shadow);
+}
+
+.result-line strong{
+  white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+}
+
+.status-ok{
+  background:var(--success-bg);
+  color:var(--success-text);
+}
+
+.status-bad{
+  background:var(--danger-bg);
+  color:var(--danger-text);
+}
+
+/* ================= INSTAGRAM NEUMORPH ================= */
+.footer{
+  margin-top:3rem;
+  display:flex;
+  justify-content:center;
+}
+
+.insta-card{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.6rem;
+  padding:1.2rem 2.5rem;
+  border-radius:22px;
+  background:var(--card-bg);
+  color:var(--text);
+  text-decoration:none;
+  font-weight:600;
+  box-shadow:var(--soft-shadow);
+  transition:.25s ease;
+}
+
+.insta-card:hover{
+  box-shadow:var(--inset-shadow);
+  transform:translateY(2px);
+  color:var(--accent);
+}
+
+.insta-icon{
+  width:28px;
+  height:28px;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:2;
+}
+</style>
 </head>
+
 <body>
 
-  <main class="container">
-    <img 
-      src="trio.gif" 
-      alt="Happy Cat"
-    >
-    <button id="btn-play" class="play-button">
-      ▶ MUSIKKKK
-    </button>
-  </main>
+<div class="container">
 
-  <audio id="my-audio" src="tante.mp3" loop preload="auto"></audio>
+  <div class="topbar">
+    <button onclick="toggleTheme()">🌙</button>
+  </div>
 
-  <script>
-    const audio = document.getElementById('my-audio');
-    const btnPlay = document.getElementById('btn-play');
+  <h2>Kalkulator Standar Deviasi Relatif</h2>
 
-    btnPlay.addEventListener('click', () => {
-      if (audio.paused) {
-        audio.play().then(() => {
-          btnPlay.textContent = '⏸ PAUSE';
-          btnPlay.classList.add('playing');
-        }).catch(err => {
-          console.log("Audio playback error:", err);
-        });
-      } else {
-        audio.pause();
-        btnPlay.textContent = '▶ MUSIKKKK';
-        btnPlay.classList.remove('playing');
-      }
-    });
-  </script>
+  <div class="inputs" id="inputs"></div>
+
+  <div class="button-container">
+    <button class="action-button" onclick="tambahSampel()">+ Tambah Sampel</button>
+    <button class="action-button" onclick="hitung()">Hitung</button>
+  </div>
+
+  <div id="hasil"></div>
+
+  <div class="footer">
+    <a href="https://instagram.com/ekabudiku" target="_blank" class="insta-card">
+      <span>@ekabudiku</span>
+      <svg class="insta-icon" viewBox="0 0 24 24">
+        <rect x="2" y="2" width="20" height="20" rx="5"/>
+        <circle cx="12" cy="12" r="4"/>
+        <circle cx="17.5" cy="6.5" r="1"/>
+      </svg>
+    </a>
+  </div>
+
+</div>
+
+<script>
+let maxSampel = 15;
+let jumlahSampel = 3;
+let valuesCache = [];
+
+/* FORMAT */
+function formatRupiah(el){
+  let v = el.value.replace(/\D/g,'');
+  el.value = v ? new Intl.NumberFormat('id-ID').format(v) : '';
+}
+
+/* RENDER INPUT (TIDAK HILANG DATA) */
+function renderInputs(){
+  const c = document.getElementById("inputs");
+  c.innerHTML = "";
+
+  for(let i=0;i<jumlahSampel;i++){
+    const input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = "Sampel " + (i+1);
+    input.value = valuesCache[i] || "";
+
+    input.oninput = () => {
+      formatRupiah(input);
+      valuesCache[i] = input.value;
+    };
+
+    c.appendChild(input);
+  }
+}
+
+/* TAMBAH SAMPEL */
+function tambahSampel(){
+  if(jumlahSampel >= maxSampel){
+    alert("Maksimal 15 sampel");
+    return;
+  }
+  jumlahSampel++;
+  renderInputs();
+}
+
+/* HITUNG */
+function hitung(){
+  const values = valuesCache
+    .filter(v => v)
+    .map(v => parseFloat(v.replace(/\./g,'')));
+
+  const hasil = document.getElementById("hasil");
+  hasil.innerHTML = "";
+
+  if(values.length < 3){
+    hasil.innerHTML = `
+      <div class="result-line status-bad">
+        <span>Error</span>
+        <strong>Minimal 3 sampel!</strong>
+      </div>`;
+    return;
+  }
+
+  const mean = values.reduce((a,b)=>a+b,0)/values.length;
+  const variance = values.reduce((s,v)=>s+Math.pow(v-mean,2),0)/(values.length-1);
+  const sd = Math.sqrt(variance);
+  const rsd = mean!==0 ? (sd/mean)*100 : 0;
+
+  const status = rsd<=25 ? "status-ok":"status-bad";
+  const text = rsd<=25 ? "Mantab":"Ditolak";
+
+  hasil.innerHTML = `
+    <div class="result-line">
+      <span>Rata-rata (Mean)</span>
+      <strong>${mean.toLocaleString('id-ID')}</strong>
+    </div>
+    <div class="result-line">
+      <span>Standar Deviasi (SD)</span>
+      <strong>${sd.toLocaleString('id-ID')}</strong>
+    </div>
+    <div class="result-line ${status}">
+      <span>Relatif Standar Deviasi (RSD)</span>
+      <strong>${rsd.toFixed(2)}% (${text})</strong>
+    </div>`;
+}
+
+/* DARK MODE */
+function toggleTheme(){
+  document.body.classList.toggle("dark");
+}
+
+/* INIT */
+renderInputs();
+</script>
+
 </body>
 </html>
+
