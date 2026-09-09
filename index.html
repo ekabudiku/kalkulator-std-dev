@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Kalkulator Standar Deviasi Relatif | Zona Nilai Tanah</title>
+<title>Kalkulator Standar Deviasi Relatif | ZNT 2026</title>
 
 <meta name="description" content="Kalkulator Standar Deviasi Relatif (RSD) untuk analisis Zona Nilai Tanah (ZNT). Hitung mean, standar deviasi, dan RSD secara otomatis.">
 
@@ -122,9 +122,10 @@ h2{
   margin-top:2rem;
   display:grid;
   gap:1rem;
+  justify-content: center;
 
   /* KUNCI PENYAMAAN UKURAN */
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, 140px);
   align-items:stretch;
 }
 
@@ -246,7 +247,8 @@ input:focus{outline:none}
     <button onclick="toggleTheme()">🌙</button>
   </div>
 
-  <h2>Kalkulator Standar Deviasi Relatif</h2>
+  <h2>KALKULATOR STD RELATIF (ZNT 2026)</h2>
+  <h3>Gunakan Untuk Melihat Apakah Nilai Akhir Zona Sudah Sesuai Ketentuan</h3>
 
   <div class="inputs" id="inputs"></div>
 
@@ -335,7 +337,7 @@ function hitung(){
   const rsd = mean!==0 ? (sd/mean)*100 : 0;
 
   const status = rsd<=25 ? "status-ok":"status-bad";
-  const text = rsd<=25 ? "Mantab":"Ditolak";
+  const text = rsd<=25 ? "Mantab":"Tidak Mantab!";
 
   hasil.innerHTML = `
     <div class="result-line">
@@ -363,4 +365,3 @@ renderInputs();
 
 </body>
 </html>
-
