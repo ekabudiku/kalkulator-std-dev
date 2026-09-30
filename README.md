@@ -50,7 +50,7 @@ git clone https://github.com/ekabudiku/kalkulator-std-dev.git
 
 Akses versi online melalui GitHub Pages:
 
-👉 [https://ekabudiku.github.io/kalkulator-std-dev/](https://ekabudiku.github.io/kalkulator-std-dev/) *(sesuaikan dengan link github pages Anda)*
+👉 [https://ekabudiku.github.io/kalkulator-std-dev/](https://ekabudiku.github.io/kalkulator-std-dev/)
 
 ---
 
