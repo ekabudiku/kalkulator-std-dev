@@ -131,8 +131,9 @@ h2{
   align-items:stretch;
 }
 
-/* ================= INPUT ================= */
-input{
+/* ================= INPUT & SELECT ================= */
+/* Menambahkan styling select agar sama dengan input neumorph */
+input, select{
   height:48px;
   border:none;
   border-radius:14px;
@@ -142,9 +143,10 @@ input{
   background:var(--card-bg);
   box-shadow:var(--inset-shadow);
   color:var(--text);
+  appearance: none;
 }
 
-input:focus{outline:none}
+input:focus, select:focus{outline:none}
 
 /* ================= BUTTONS (VERTICAL) ================= */
 .button-container{
@@ -250,6 +252,16 @@ input:focus{outline:none}
   </div>
 
   <h2>KALKULATOR STD RELATIF (ZNT 2026)</h2>
+
+  <!-- TAMBAHAN: Opsi Pemilihan Skala Project -->
+  <div style="text-align: center; margin-top: 1.5rem; margin-bottom: 0.5rem;">
+    <label style="font-weight: 600; color: var(--accent); display: block; margin-bottom: 0.5rem;">Skala Project ZNT</label>
+    <select id="skalaProject" onchange="hitung()" style="width: 100%; max-width: 260px; cursor: pointer;">
+      <option value="15">Skala 1:2.500 (Max 15%)</option>
+      <option value="25" selected>Skala 1:10.000 (Max 25%)</option>
+      <option value="30">Skala 1:25.000 (Max 30%)</option>
+    </select>
+  </div>
   
   <div class="inputs" id="inputs"></div>
 
@@ -337,8 +349,12 @@ function hitung(){
   const sd = Math.sqrt(variance);
   const rsd = mean!==0 ? (sd/mean)*100 : 0;
 
-  const status = rsd<=25 ? "status-ok":"status-bad";
-  const text = rsd<=25 ? "Mantab":"Tidak Mantab!";
+  // AMBIL NILAI BATAS DARI DROPDOWN SKALA ZNT
+  let maxRsd = parseFloat(document.getElementById("skalaProject").value);
+
+  // BANDINGKAN DENGAN MAX RSD YANG DIPILIH
+  const status = rsd<=maxRsd ? "status-ok":"status-bad";
+  const text = rsd<=maxRsd ? "Mantab":"Tidak Mantab!";
 
   hasil.innerHTML = `
     <div class="result-line">
